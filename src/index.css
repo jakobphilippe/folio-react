@@ -1,7 +1,22 @@
-.percent-change-positive {
-    color: green
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif !important;
 }
 
+.percent-change-positive {
+    color: #137333;
+    border-radius: 8px;
+    background-color: #e6f4ea;
+    padding: 6px;}
+
 .percent-change-negative {
-    color: red
+    color: #a50e0e;
+    border-radius: 8px;
+    background-color: #fce8e6;
+    padding: 6px;
+}
+
+.MuiSvgIcon-root {
+    font-size: 1.2em!important;
 }
