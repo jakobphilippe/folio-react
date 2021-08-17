@@ -17,6 +17,33 @@ body {
     padding: 6px;
 }
 
+.change-positive {
+    color: #137333;
+}
+
+.change-negative {
+    color: #a50e0e;
+}
+
 .MuiSvgIcon-root {
     font-size: 1.2em!important;
+}
+
+.price-increase {
+    color: #137333 !important;
+    background-color: #e6f4ea;
+}
+
+.price-decrease {
+    color: #a50e0e !important;
+    background-color: #fce8e6;
+}
+
+.price-animation {
+    transition: all 750ms ease-out;
+    background-color: transparent;
+}
+
+.modal-xl {
+    max-width: 1400px !important;
 }
