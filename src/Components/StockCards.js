@@ -120,7 +120,7 @@ const StockCards = () => {
                     {loading.map((load) => (<LoadingCard key={load} ticker={load} />))}
                 </Row>
             </Container>
-            <ReactInterval timeout={5000} enabled={tickers.length > 0} callback={() => updateStocks()} />
+            <ReactInterval timeout={10000} enabled={tickers.length > 0} callback={() => updateStocks()} />
         </div>
     )
 }
