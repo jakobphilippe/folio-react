@@ -38,6 +38,7 @@ const StockCards = () => {
 
 
     };
+    
 
     // Add stock
     const addStock = (ticker) => {
@@ -78,13 +79,22 @@ const StockCards = () => {
         if (day >= 1 && day <= 5 && hour >= 9 && hour < 16) {
             axios.request({
                 method: 'POST',
-                url: `https://jakobphilippe-folio.herokuapp.com/api/stock/card_data`,
+                url: `https://jakobphilippe-folio.herokuapp.com/api/stock/quick_quote`,
                 data: {
                     tickers: [...tickers]
                 },
             }).then((response) => {
-                const currentStockData = stateRef.current
-                let newStockData = currentStockData.map(obj => response.data.find(o => o.ticker === obj.ticker) || obj);
+                let currentStockData = stateRef.current
+                let updatedQuotes = []
+                for (var x in response.data) {
+                    let newQuote = response.data[x]
+                    let objIndex = currentStockData.findIndex((obj => obj.ticker === newQuote.ticker));
+                    newQuote.desc = currentStockData[objIndex].desc
+                    newQuote.name = currentStockData[objIndex].name
+                    newQuote.sector = currentStockData[objIndex].sector
+                    updatedQuotes.push(newQuote)
+                }
+                let newStockData = currentStockData.map(obj => updatedQuotes.find(o => o.ticker === obj.ticker) || obj);
                 setStocks(newStockData)
             }, (error) => {
                 console.log(error)
@@ -110,7 +120,7 @@ const StockCards = () => {
                     {loading.map((load) => (<LoadingCard key={load} ticker={load} />))}
                 </Row>
             </Container>
-            <ReactInterval timeout={15000} enabled={tickers.length > 0} callback={() => updateStocks()} />
+            <ReactInterval timeout={5000} enabled={tickers.length > 0} callback={() => updateStocks()} />
         </div>
     )
 }

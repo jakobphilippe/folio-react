@@ -19,7 +19,7 @@ const StockBigPicture = ({ stock, show, setShow }) => {
             <Modal.Body>
                 <Quote stock={stock} size="2em" />
                 <Container fluid>
-                    <Row>
+                    <Row className="row-eq-height">
                         <Col md={8}>
                             <div className={"rounded-3 shadow-sm"} style={{ height: "30em" }}>
                                 {
