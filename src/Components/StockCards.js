@@ -76,16 +76,20 @@ const StockCards = () => {
         const hour = d.getHours();
 
         if (day >= 1 && day <= 5 && hour >= 9 && hour < 16) {
-            let currentStockData = stateRef.current
-            let updatedQuotes = []
-            let newQuote = newStock[0]
-            let objIndex = currentStockData.findIndex((obj => obj.ticker === newQuote.ticker));
-            newQuote.desc = currentStockData[objIndex].desc
-            newQuote.name = currentStockData[objIndex].name
-            newQuote.sector = currentStockData[objIndex].sector
-            updatedQuotes.push(newQuote)
-            let newStockData = currentStockData.map(obj => updatedQuotes.find(o => o.ticker === obj.ticker) || obj);
-            setStocks(newStockData)
+            try {
+                let currentStockData = stateRef.current
+                let updatedQuotes = []
+                let newQuote = newStock[0]
+                let objIndex = currentStockData.findIndex((obj => obj.ticker === newQuote.ticker));
+                newQuote.desc = currentStockData[objIndex].desc
+                newQuote.name = currentStockData[objIndex].name
+                newQuote.sector = currentStockData[objIndex].sector
+                updatedQuotes.push(newQuote)
+                let newStockData = currentStockData.map(obj => updatedQuotes.find(o => o.ticker === obj.ticker) || obj);
+                setStocks(newStockData)
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
 
