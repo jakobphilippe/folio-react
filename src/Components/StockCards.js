@@ -69,36 +69,23 @@ const StockCards = () => {
         setStocks(stocks.filter((stock) => stock.ticker !== ticker))
     }
 
-    // Update stocks
-    const updateStocks = () => {
+    const updateStock = (newStock) => {
         let d = new Date();
         d = new Date(d.toLocaleString('en-US', { timeZone: 'America/New_York' }));
         const day = d.getDay();
         const hour = d.getHours();
 
         if (day >= 1 && day <= 5 && hour >= 9 && hour < 16) {
-            axios.request({
-                method: 'POST',
-                url: `https://jakobphilippe-folio.herokuapp.com/api/stock/quick_quote`,
-                data: {
-                    tickers: [...tickers]
-                },
-            }).then((response) => {
-                let currentStockData = stateRef.current
-                let updatedQuotes = []
-                for (var x in response.data) {
-                    let newQuote = response.data[x]
-                    let objIndex = currentStockData.findIndex((obj => obj.ticker === newQuote.ticker));
-                    newQuote.desc = currentStockData[objIndex].desc
-                    newQuote.name = currentStockData[objIndex].name
-                    newQuote.sector = currentStockData[objIndex].sector
-                    updatedQuotes.push(newQuote)
-                }
-                let newStockData = currentStockData.map(obj => updatedQuotes.find(o => o.ticker === obj.ticker) || obj);
-                setStocks(newStockData)
-            }, (error) => {
-                console.log(error)
-            });
+            let currentStockData = stateRef.current
+            let updatedQuotes = []
+            let newQuote = newStock[0]
+            let objIndex = currentStockData.findIndex((obj => obj.ticker === newQuote.ticker));
+            newQuote.desc = currentStockData[objIndex].desc
+            newQuote.name = currentStockData[objIndex].name
+            newQuote.sector = currentStockData[objIndex].sector
+            updatedQuotes.push(newQuote)
+            let newStockData = currentStockData.map(obj => updatedQuotes.find(o => o.ticker === obj.ticker) || obj);
+            setStocks(newStockData)
         }
     }
 
@@ -115,12 +102,12 @@ const StockCards = () => {
                         handleDrag={handleDrag}
                         handleDrop={handleDrop}
                         stock={stock}
-                        onDelete={deleteStock} />))
+                        onDelete={deleteStock}
+                        updateStock={updateStock} />))
                     }
                     {loading.map((load) => (<LoadingCard key={load} ticker={load} />))}
                 </Row>
             </Container>
-            <ReactInterval timeout={10000} enabled={tickers.length > 0} callback={() => updateStocks()} />
         </div>
     )
 }

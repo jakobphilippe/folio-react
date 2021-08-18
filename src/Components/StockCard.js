@@ -2,8 +2,33 @@ import React from 'react'
 import Card from 'react-bootstrap/Card'
 import Quote from './Quote';
 import TradingViewWidget from 'react-tradingview-widget';
+import axios from 'axios'
+import ReactInterval from 'react-interval';
 
-const StockCard = ({stock, setShow, onDelete}) => {
+const StockCard = ({stock, setShow, onDelete, updateStock}) => {
+
+    const update = () => {
+        let d = new Date();
+        d = new Date(d.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+        const day = d.getDay();
+        const hour = d.getHours();
+
+        if (day >= 1 && day <= 5 && hour >= 9 && hour < 16) {
+            axios.request({
+                method: 'POST',
+                timeout: 5000,
+                url: `https://jakobphilippe-folio.herokuapp.com/api/stock/quick_quote`,
+                data: {
+                    tickers: [stock.ticker]
+                },
+            }).then((response) => {
+                updateStock(response.data)
+            }, (error) => {
+                console.log(error)
+            });
+        }
+    }
+
     return (
         <Card className="card box-shadow">
             <Card.Header style={{ cursor: "grab" }}>
@@ -27,6 +52,7 @@ const StockCard = ({stock, setShow, onDelete}) => {
                     <small className="text-muted">{stock.sector}</small>
                 </div>
             </Card.Footer>
+            <ReactInterval timeout={5000} enabled={true} callback={() => update()} />
         </Card>
     )
 }
